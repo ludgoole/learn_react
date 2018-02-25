@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+      //全局变量 scope 封装为组件 
+      /*
+      *@name: createClass
+      *@function: to create a class or component
+      *@parms: {}
+      *   key: getInitialState  fn
+      *   key: handleClick  value: fn  => change value |||| event.target.value: 实时输入值
+      *   key: render  value: fn
+      *@return: dom
+      */
+      var Input = React.createClass({
+        getInitialState: function() {
+          return {value: 'Hello!'};
+        },
+        handleChange: function(event) {
+          this.setState({value: event.target.value});
+        },
+        render: function () {
+          var value = this.state.value;
+          return (
+            //value = {value} 默认值
+            <div>
+              <input type="text" value={value} onChange={this.handleChange} />  
+              <p>{value}</p>
+            </div>
+          );
+        }
+      });
+
+      ReactDOM.render(
+        <Input/>, 
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+</html>

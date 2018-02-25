@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+      //全局变量 scope 数组元素为dom <h1></h1> <h2></h2>
+      var arr = [
+        <h1 key="1">Hello world!</h1>,
+        <h2 key="2">React is awesome</h2>,
+      ];
+      /*
+      *@name: render
+      *@function: to render a dom node
+      *@parms: 
+      *   parm1 <h1>statement</h1>  => {} 语句块 || 变量 || 数组
+      *   parm2 #id 
+      */
+      ReactDOM.render(
+        <div>{arr}</div>,
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+</html>

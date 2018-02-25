@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+      //全局变量 scope 封装为组件 
+      /*
+      *@name: createClass
+      *@function: to create a class or component
+      *@parms: {}
+      *   key: handleClick  value: fn  =>event focus()  =>局部变量
+      *   key: render  value: fn
+      *@return: dom
+      */
+      var MyComponent = React.createClass({
+        handleClick: function() {
+          this.refs.myTextInput.focus();
+        },
+        render: function() {
+          return (
+            <div>
+              <input type="text" ref="myTextInput" />
+              <input type="button" value="Focus the text input" onClick={this.handleClick} />
+            </div>
+          );
+        }
+      });
+
+      ReactDOM.render(
+        <MyComponent />,
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+</html>

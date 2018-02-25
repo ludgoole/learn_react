@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+      //全局变量 scope 封装为组件 
+      /*
+      *@name: createClass
+      *@function: to create a class or component
+      *@parms: {}
+      *   key: getInitialState  fn
+      *   key: componentDidMount  fn
+      *   key: render  value: fn
+      *@return: dom
+      */
+      var Hello = React.createClass({
+        getInitialState: function () {
+          return { opacity: 1.0 };
+        },
+
+        //componentDidMount: 生命周期 =>加载完成后
+        componentDidMount: function () {
+          this.timer = setInterval(function () {
+            var opacity = this.state.opacity;
+            opacity -= .05;
+            if (opacity < 0.1) {
+              opacity = 1.0;
+            }
+            this.setState({
+              opacity: opacity
+            });
+          }.bind(this), 100);
+        },
+
+        render: function () {
+          return (
+            //style: {{ }}
+            <div style={{opacity: this.state.opacity}}>
+              Hello {this.props.name}
+            </div>
+          );
+        }
+      });
+
+      ReactDOM.render(
+        <Hello name="world"/>,
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+</html>

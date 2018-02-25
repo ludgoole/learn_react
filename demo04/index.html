@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../build/react.js"></script>
+    <script src="../build/react-dom.js"></script>
+    <script src="../build/browser.min.js"></script>
+  </head>
+  <body>
+    <div id="example"></div>
+    <script type="text/babel">
+      //全局变量 scope 封装为组件 
+      /*
+      *@name: createClass
+      *@function: to create a class or component
+      *@parms: {}
+      *   key: render
+      *   value: fn
+      */
+      var HelloMessage = React.createClass({
+        render: function() {
+          //property: props = [id, class, name, src……]
+          return <h1>Hello {this.props.name}</h1>;
+        }
+      });
+
+      /*
+      *@name: render
+      *@function: to render a dom node
+      *@parms: 
+      *   parm1 <dom/>  => 自定义dom
+      *   parm2 #id 
+      */
+      ReactDOM.render(
+        // data: {name: John}
+        <HelloMessage name="John" />,
+        document.getElementById('example')
+      );
+    </script>
+  </body>
+</html>
