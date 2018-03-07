@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>React-Template</title>
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./js/react.min.js"></script>
+    <script src="./js/react-dom.min.js"></script>
+    <script src="./js/browser.min.js"></script>
+</head>
+<body>
+	<!-- 容器 -->
+	<div id="container"></div>
+<script type="text/babel">
+/***************************************************/
+	props：连接父子组件的桥梁
+		props {
+			k: value
+		}
+		子组件取值K，父组件赋值value
+		父组件(赋值属性)传方法，子组件(调用方法)传数据
+
+	props.children: 连接父子DOM的桥梁
+		props.children = text；
+		父DOM取值children，子DOM赋值value
+
+	refs：处理表单的神器
+		refs {
+			key {
+				value: props.children
+			}
+		}
+		{ref: 'key'}
+	refs.key.value = props.children		
+		
+/***************************************************/
+	
+	//父组件
+	var Board = React.createClass({
+		//初始状态  =>元数据
+		getInitialState: function(){
+			return ({
+				comments: []
+			});
+		},
+
+		//更新评论  =>newText: 子组件数据
+		updateComment: function(newText,i){
+			var arr = this.state.comments;
+			arr[i] = newText;
+			// 更新状态
+			this.setState({comments: arr});
+		},
+
+		//删除子组件		
+		remove: function(i){
+			var arr = this.state.comments;
+			arr.splice(i,1);
+			// 更新状态
+			this.setState({comments: arr});
+		},
+
+		//添加子组件
+		add: function(text){
+			var arr = this.state.comments;
+			arr.push(text);
+			// 更新状态
+			this.setState({comments: arr});
+		},
+
+		//生成子组件
+		eachComment: function(text,i){
+			return (
+				<Comment deleteFromBoard={this.remove} updateCommentText={this.updateComment} key={i} index={i}>{text}</Comment>
+			);
+		},
+
+		
+
+		render: function(){
+			return (
+				<div>
+					<button onClick={this.add.bind(null,"Default text")} className="button-info create">Add New</button>
+					<div className="board">
+					{
+						this.state.comments.map(this.eachComment)
+					}
+					</div>
+				</div>
+			);
+		}
+	});
+
+	//子组件
+	var Comment = React.createClass({
+		getInitialState: function(){
+			return ({editing: false});
+		},
+
+		//编辑评论
+		edit: function(){
+			//状态改变
+			this.setState({editing: true});
+		},
+
+		//删除组件
+		remove: function(){
+			//调用父组件方法，接收父组件数据  =>callback
+			this.props.deleteFromBoard(this.props.index);
+		},
+
+		//保存评论
+		save: function(){
+			//获取输入值
+			var val = this.refs.newText.value;
+			//调用父组件方法，传递子组件数据，接收父组件数据 =>callback  
+			this.props.updateCommentText(val,this.props.index);
+			//状态改变
+			this.setState({editing: false});
+		},
+
+		renderNormal:function(){
+			return (
+				<div className="commentContainer">
+					<div>{this.props.children}</div>
+					<button onClick={this.edit} className="button-primary">Edit</button>
+					<button onClick={this.remove} className="button-danger">Remove</button>
+				</div>
+			);
+		},
+		
+		renderForm:function(){
+			return (
+				<div className="commentContainer">
+					<textarea ref="newText" defaultValue={this.props.children}></textarea>
+					<button onClick={this.save} className="button-success">Save</button>
+				</div>
+			)
+		},
+
+
+		render: function (){
+			if(this.state.editing){
+				return this.renderForm();
+			}else{
+				return this.renderNormal();
+			}
+		}
+	});
+	
+	//DOM渲染
+	ReactDOM.render(
+		<Board />,
+		document.getElementById('container')
+	);
+</script>
+</body>
+</html>
